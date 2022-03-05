@@ -1,5 +1,33 @@
 
 
+const displayProductsAvailabeInStorage = () => {
+    // get inputs for Local
+    const nameInputField = document.getElementById('name-field');
+    const productName = nameInputField.value;
+
+
+    const priceInputField = document.getElementById('price-field');
+    const productPrice = priceInputField.value;
+    const price = parseFloat(productPrice);
+    console.log(price);
+
+    const storage = window.localStorage;
+    // console.log(storageJSON);
+
+    const productJSON = storage.getItem('phone')
+
+    const product = JSON.parse(productJSON);
+    console.log(product)
+
+
+    for (const key in product) {
+        console.log(key);
+        displayProduct(key);
+    }
+}
+
+
+
 const addToLocal = () => {
 
 
@@ -14,17 +42,25 @@ const addToLocal = () => {
     console.log(price);
 
 
-    if (!productName && productPrice === '') {
+    if (!productName || !price) {
+        nameInputField.value = '';
+        priceInputField.value = '';
         return;
     }
 
 
     // get product from localStorage...
-    const product = getLocalStorageEntries(productName);
+    else {
+        const product = getLocalStorageEntries(productName);
 
-    addToLocalStorage(product, productName, price);
-    nameInputField.value = '';
-    priceInputField.value = '';
+        addToLocalStorage(product, productName, price);
+        nameInputField.value = '';
+        priceInputField.value = '';
+
+        displayProduct(productName);
+
+
+    }
 
 
 
@@ -64,3 +100,10 @@ const addToLocalStorage = (product, productName, price) => {
     }
 }
 
+const displayProduct = name => {
+    const ul = document.getElementById('products');
+    const li = document.createElement('li');
+    li.innerText = name;
+    ul.appendChild(li);
+}
+displayProductsAvailabeInStorage();
